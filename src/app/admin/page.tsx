@@ -48,11 +48,8 @@ const Admin = () => {
               </form>
       ) : (
         <>
-        <p>Account page will go here.</p>
-        {/* <p>{data.username}</p> */}
-        {/* <Admin  session={session}/> */}
         <AdminCard session={session}/>
-        <button onClick={handleLogout}>Logout</button>
+        <button className='mt-6' onClick={handleLogout}>Logout</button>
       </>
       )}
     </div>
