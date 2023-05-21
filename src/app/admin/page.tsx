@@ -5,6 +5,7 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import AdminCard from './components/AdminCard'
+import SwitchAnnouncement from './components/SwitchAnnouncement'
 
 const Admin = () => {
     const session = useSession()
@@ -49,6 +50,7 @@ const Admin = () => {
       ) : (
         <>
         <AdminCard session={session}/>
+        <SwitchAnnouncement/>
         <button className='mt-6' onClick={handleLogout}>Logout</button>
       </>
       )}
