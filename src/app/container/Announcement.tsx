@@ -6,7 +6,7 @@ const AnnouncementVariant = ['close', 'open', 'maintenance'] as const;
 
 type AnnouncementProps = {
   isLoading?: boolean;
-  variant?: (typeof AnnouncementVariant)[number];
+  variant: string;
 } & React.ComponentPropsWithRef<'div'>;
 
 const Announcement = ({ isLoading = false, variant = 'open' }: AnnouncementProps) => {
