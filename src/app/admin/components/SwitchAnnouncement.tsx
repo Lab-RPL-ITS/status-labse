@@ -1,9 +1,11 @@
 import { supabase } from '@/lib/supabaseClient';
 import React, { useEffect, useState } from 'react';
+import ConfirmationDialog from '../../../components/modal/ConfirmationDialog'
 
 const SwitchAnnouncement = () => {
   const [status, setStatus] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -18,29 +20,41 @@ const SwitchAnnouncement = () => {
     fetchStatus();
   }, []);
 
-  const handleStatusChange = async (event: { target: { value: any; }; }) => {
+  const handleStatusChange = async (event: { target: { value: string } }) => {
     const newStatus = event.target.value;
     setSelectedStatus(newStatus);
+    setIsConfirmationOpen(true);
+  };
+
+  const handleConfirmStatusChange = async () => {
+    setIsConfirmationOpen(false);
 
     const { data, error } = await supabase.from('status').select('id').order('created_at', { ascending: false }).limit(1);
     if (error) {
       console.error('Error fetching latest status:', error.message);
     } else if (data && data.length > 0) {
       const latestStatusId = data[0].id;
-      const { data: updatedData, error: updateError } = await supabase.from('status').update({ status: newStatus }).eq('id', latestStatusId);
+      const { data: updatedData, error: updateError } = await supabase
+        .from('status')
+        .update({ status: selectedStatus })
+        .eq('id', latestStatusId);
       if (updateError) {
         console.error('Error updating status:', updateError.message);
       } else if (updatedData) {
-        setStatus(newStatus);
+        setStatus(selectedStatus);
       }
     } else {
-      const { data: insertedData, error: insertError } = await supabase.from('status').insert([{ status: newStatus }]);
+      const { data: insertedData, error: insertError } = await supabase.from('status').insert([{ status: selectedStatus }]);
       if (insertError) {
         console.error('Error inserting new status:', insertError.message);
       } else if (insertedData) {
-        setStatus(newStatus);
+        setStatus(selectedStatus);
       }
     }
+  };
+
+  const handleCancelConfirmation = () => {
+    setIsConfirmationOpen(false);
   };
 
   return (
@@ -48,7 +62,13 @@ const SwitchAnnouncement = () => {
       <h2>Status: {status}</h2>
       <div>
         <label>
-          <input type="radio" name="status" value="maintenance" checked={selectedStatus === 'maintenance'} onChange={handleStatusChange} />
+          <input
+            type="radio"
+            name="status"
+            value="maintenance"
+            checked={selectedStatus === 'maintenance'}
+            onChange={handleStatusChange}
+          />
           Maintenance
         </label>
         <label>
@@ -60,6 +80,11 @@ const SwitchAnnouncement = () => {
           Close
         </label>
       </div>
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onCancel={handleCancelConfirmation}
+        onConfirm={handleConfirmStatusChange}
+      />
     </div>
   );
 };
