@@ -1,11 +1,15 @@
 import { supabase } from '@/lib/supabaseClient';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import ConfirmationDialog from '../../../components/modal/ConfirmationDialog'
+import { useRouter } from 'next/navigation';
 
 const SwitchAnnouncement = () => {
   const [status, setStatus] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -24,6 +28,7 @@ const SwitchAnnouncement = () => {
     const newStatus = event.target.value;
     setSelectedStatus(newStatus);
     setIsConfirmationOpen(true);
+
   };
 
   const handleConfirmStatusChange = async () => {
@@ -40,7 +45,6 @@ const SwitchAnnouncement = () => {
         .eq('id', latestStatusId);
       if (updateError) {
         console.error('Error updating status:', updateError.message);
-      } else if (updatedData) {
         setStatus(selectedStatus);
       }
     } else {
@@ -48,9 +52,11 @@ const SwitchAnnouncement = () => {
       if (insertError) {
         console.error('Error inserting new status:', insertError.message);
       } else if (insertedData) {
-        setStatus(selectedStatus);
+        setStatus(selectedStatus);       
       }
     }
+    toast.success(`Berhasil mengubah status menjadi ${selectedStatus}`)
+    router.replace('/')
   };
 
   const handleCancelConfirmation = () => {
