@@ -12,11 +12,9 @@ export default function AdminCard({ session }: { session: Session }) {
 
   useEffect(() => {
     getProfile()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  console.log(user)
-
-  console.log(username)
 
   async function getProfile() {
     try {
