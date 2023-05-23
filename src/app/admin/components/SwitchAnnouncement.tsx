@@ -88,6 +88,7 @@ const SwitchAnnouncement = () => {
       </div>
       <ConfirmationDialog
         isOpen={isConfirmationOpen}
+        status={selectedStatus}
         onCancel={handleCancelConfirmation}
         onConfirm={handleConfirmStatusChange}
       />
