@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:strict": "next lint --max-warnings 0",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write . && eslint . --fix",
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.6.1",
@@ -33,6 +38,16 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
     "supabase": "^1.62.3"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,html,css,json}": [
+      "yarn prettier --write"
+    ]
   }
 }
