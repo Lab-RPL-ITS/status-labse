@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Announcement from './container/Announcement';
 import { supabase } from '@/lib/supabaseClient';
+import Seo from '@/components/Seo';
 
 export default function Home() {
   const [status, setStatus] = useState('');
@@ -26,6 +27,7 @@ export default function Home() {
 
   return (
     <main>
+      <Seo />
       <Announcement variant={status} />
     </main>
   );
