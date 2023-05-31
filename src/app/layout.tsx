@@ -2,9 +2,9 @@
 
 import './globals.css';
 import { Inter } from 'next/font/google';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { Toaster } from 'react-hot-toast';
 import { supabase } from '@/lib/supabaseClient';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
 const inter = Inter({ subsets: ['latin'] });
 
 // export const metadata = {
